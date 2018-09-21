@@ -1,4 +1,7 @@
 # SKEdata
+
+[IMG]https://sebastianoriva.altervista.org/data/img/skedata1.png[/IMG]
+
 SKEdata is a file sharing platform made in HTML, PHP, MySQL and Javascript.
 
 With SKEdata, you'll be able to: 
