@@ -1,6 +1,6 @@
 # SKEdata
 
-[IMG]https://sebastianoriva.altervista.org/data/img/skedata1.png[/IMG]
+![SKEdata logo](https://sebastianoriva.altervista.org/data/img/skedata1.png)
 
 SKEdata is a file sharing platform made in HTML, PHP, MySQL and Javascript.
 
