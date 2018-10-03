@@ -76,27 +76,56 @@ $selectidquery = "SELECT fileid, filename, user, date, ext, size FROM uploaded w
 $selectresult = mysqli_query($db, $selectidquery);
 				
 if (mysqli_num_rows($selectresult) > 0) {
+	
+// output data of each row
+while($row = mysqli_fetch_assoc($selectresult)) {
 			
 if(!empty($url)){
+	
+	if($ext1 == 'avi'){
+		
+		$fileext = $row["ext"];
+        echo "<br>File: ". $row["filename"] . " " . $row["ext"] . "<br>
+		Size: ". $row["size"] . " MB<br>
+		Upload date: ". $row["date"] . "<br><br>
+		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br>
+		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+    }	
+	else {
 
-    // output data of each row
-    while($row = mysqli_fetch_assoc($selectresult)) {
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
 		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
     }
-} else {
 
-    // output data of each row
-    while($row = mysqli_fetch_assoc($selectresult)) {
+} else {
+	
+	$ext1 = $row["ext"];
+	if($ext1 == 'avi'){
+		
+		$fileext = $row["ext"];
+        echo "<br>File: ". $row["filename"] . "<br>
+		Size: ". $row["size"] . " MB<br>
+		Upload date: ". $row["date"] . "<br><br>
+		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br>
+		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+
+	}
+	 
+	else {
+
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
 		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
-		} 
-    
-} }
+
+		
+	}
+	}
+
+}
+	}
 else {
     echo "No files found!";
 }
