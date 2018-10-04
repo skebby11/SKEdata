@@ -82,34 +82,35 @@ while($row = mysqli_fetch_assoc($selectresult)) {
 			
 if(!empty($url)){
 	
-	if($ext1 == 'avi'){
+	$ext1 = $row["ext"];
+	if($ext1 == 'mp4'){
 		
 		$fileext = $row["ext"];
         echo "<br>File: ". $row["filename"] . " " . $row["ext"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
-		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br>
-		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/downloadbtn.png' width='300'></a><br>
+		<a href='player.php?id=" . $idfile . "'><img src='img/watchnowbtn.png' width='200'></a><br><br>";
     }	
 	else {
 
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
-		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+		<a href='uploads/0/" . $url . "/". $row["filename"]. "' download><img src='img/downloadbtn.png' width='300'></a><br><br>";
     }
 
 } else {
 	
 	$ext1 = $row["ext"];
-	if($ext1 == 'avi'){
+	if($ext1 == 'mp4'){
 		
 		$fileext = $row["ext"];
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
-		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br>
-		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/downloadbtn.png' width='300'></a><br>
+		<a href='player.php?id=" . $idfile . "'><img src='img/watchnowbtn.png' width='200'></a><br><br>";
 
 	}
 	 
@@ -118,7 +119,7 @@ if(!empty($url)){
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
 		Upload date: ". $row["date"] . "<br><br>
-		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/skedatabtn.png' width='300'></a><br><br>";
+		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/downloadbtn.png' width='300'></a><br><br>";
 
 		
 	}
