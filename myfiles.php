@@ -78,16 +78,24 @@ $numerouserresult = mysqli_query($db, $selectuniquequery);
 			 <?php
 
 
-$sql1 = "SELECT filename, fileid, user, date, ext, size FROM uploaded where user = '$idutente'";
+$sql1 = "SELECT filename, fileid, user, date, ext, size, priv FROM uploaded where user = '$idutente'";
 $result1 = mysqli_query($db, $sql1);
-
 if (mysqli_num_rows($result1) > 0) {
+	
     // output data of each row
     while($row = mysqli_fetch_assoc($result1)) {
+		
+		// Is a file PRIVATE or PUBLIC
+		if($row["priv"] != 0) {
+			$privacy = "Private";
+		} elseif ($row["priv"] == 0){
+			$privacy = "Public";
+		}
+		
         echo "<div class='myfile'> <img src='img/ext/" . $row["ext"] . ".png'>
 		<div>Filename: <a href='download.php?id=" . $row["fileid"] . "' target='_blank'>". $row["filename"]. "</a><br>
 		Date: ". $row["date"] . "<br>
-		Extention: ". $row["ext"] . " - Size: ". $row["size"] . " MB <br> <a href='deletefile.php?id=" . $row["fileid"] . "'>
+		Extention: ". $row["ext"] . " - Size: ". $row["size"] . " MB - Privacy: ". $privacy ." <br> <a href='deletefile.php?id=" . $row["fileid"] . "'>
 		<input type='submit' class='btn del delbtn' value='Delete'></a></div></div>";
 		
 	

@@ -7,7 +7,7 @@
 <head>
 	<title>SKEdata - Home BETA</title>
 	<link rel="stylesheet" type="text/css" href="style.css?v1.1.47">
-	<link rel="stylesheet" type="text/css" href="form.css?v1.1.3">
+	<link rel="stylesheet" type="text/css" href="form.css?v1.1.18">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	 <link rel="icon" href="favicon.ico" />
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -74,6 +74,13 @@
 				$oldpath = "uploads/".$year."/".$month;
 				$_SESSION['user']['id']; 
 				$idutente = $_SESSION['user']['id'];
+				
+				if(isset($_POST['privacy']) && 
+   					$_POST['privacy'] == 'private') {
+					$privacy = "1";
+				} else {
+					$privacy = "0";
+				}
 			
 					$selectuniquequery = "SELECT idunique FROM users where id='$idutente'";
 					$uniqueresult = mysqli_query($db, $selectuniquequery);
@@ -106,7 +113,7 @@ if(isset($_POST['submit'])){
  }
 
 	if (isset($_SESSION['user'])) { 	
-					$datainsertquery = "INSERT INTO uploaded (filename, user, date, ext, size) VALUES ('$filename', '$idutente', '$time', '$ext', '$size')";
+					$datainsertquery = "INSERT INTO uploaded (filename, user, date, ext, size, priv) VALUES ('$filename', '$idutente', '$time', '$ext', '$size', '$privacy')";
 					mysqli_query($db, $datainsertquery);
 	}
 	
@@ -168,10 +175,18 @@ if(isset($_POST['submit'])){
 <?php endif ?>
 
  <form method='post' action='' class='drop-zone' class='dropzone' enctype='multipart/form-data'>
- <input class='btn ' type='file' name='file[]' id='file' height='100%' style='height: 100%'>
-
- <input class='btn blue' type='submit' name='submit' value='Upload'>
-</form>
+ 	<input class='btn ' type='file' name='file[]' id='file' height='100%' style='height: 100%'><br><br>
+	 
+	<?php  if (isset($_SESSION['user'])) : ?>
+	<label class="container">Private upload 
+	<input type="checkbox" name="privacy" value="private">
+	<span class="checkmark"></span>
+	</label><br>
+	<?php endif ?>
+	 
+ 	<input class='btn blue' type='submit' name='submit' value='Upload'><br>
+	 
+ </form>
 
 		</div>
 		
