@@ -11,3 +11,8 @@ With SKEdata, you'll be able to:
  - register and log in 
  - share your files
  - download your files
+
+TODO:
+ - New UI
+ - Better upload form
+ - A lot more
