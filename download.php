@@ -1,12 +1,45 @@
 <?php 
+	include('functions.php');
+
+/*	if (!isLoggedIn()) {
+		$_SESSION['msg'] = "You must log in first";
+		header('location: login.php');
+	}*/
+
 
 $idfile = $_GET['id'];
 $user = $_GET['user'];
 $url = $_GET['file'];
 
-include('functions.php');
+					
+$idutente = $_SESSION['user']['id'];
 
-php?>
+$selectuniquequery = "SELECT idunique FROM users where id='$idutente'";
+$numerouserresult = mysqli_query($db, $selectuniquequery);
+
+    while($row = mysqli_fetch_assoc($numerouserresult)) {
+	$uniqueid = $row["idunique"]; }
+
+
+$selectidquery = "SELECT user, priv FROM uploaded where fileid='$idfile'";
+$selectresult = mysqli_query($db, $selectidquery);
+
+	while($row = mysqli_fetch_assoc($selectresult)) {
+	$uploaduser = $row["user"];
+		
+	// Is a file PRIVATE or PUBLIC
+		if($row["priv"] != 0) {
+			$privacy = "Private";
+			
+			if ($idutente != $uploaduser) {
+			$_SESSION['msg'] = "This file is not public";
+			header('location: index.php');
+			}		
+		} elseif ($row["priv"] == 0){
+			$privacy = "Public";
+		}
+	}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,14 +105,28 @@ $numerouserresult = mysqli_query($db, $selectuniquequery);
 	$uniqueid = $row["idunique"];
 		}
 				
-$selectidquery = "SELECT fileid, filename, user, date, ext, size FROM uploaded where fileid='$idfile'";
+// get uploader username 
+$selectidquery = "SELECT user, priv FROM uploaded where fileid='$idfile'";
+$selectresult = mysqli_query($db, $selectidquery);			
+if (mysqli_num_rows($selectresult) > 0) {
+while($row = mysqli_fetch_assoc($selectresult)) {
+			$username = $row["user"];
+			$selectuserquery = "SELECT username FROM users where id='$username'";
+			$selectuserresult = mysqli_query($db, $selectuserquery);
+			if (mysqli_num_rows($selectuserresult) > 0) {
+			while($row = mysqli_fetch_assoc($selectuserresult)) {
+			$username = $row["username"];
+}}}}
+				
+				
+$selectidquery = "SELECT fileid, filename, user, date, ext, size, priv FROM uploaded where fileid='$idfile'";
 $selectresult = mysqli_query($db, $selectidquery);
 				
 if (mysqli_num_rows($selectresult) > 0) {
 	
 // output data of each row
 while($row = mysqli_fetch_assoc($selectresult)) {
-			
+
 if(!empty($url)){
 	
 	$ext1 = $row["ext"];
@@ -115,10 +162,13 @@ if(!empty($url)){
 	}
 	 
 	else {
+		
 
+		
         echo "<br>File: ". $row["filename"] . "<br>
 		Size: ". $row["size"] . " MB<br>
-		Upload date: ". $row["date"] . "<br><br>
+		Upload date: ". $row["date"] . "<br>
+		Uploaded by: ". $username . "<br><br>
 		<a href='uploads/" . $uniqueid . "/". $row["filename"]. "' download><img src='img/downloadbtn.png' width='300'></a><br><br>";
 
 		

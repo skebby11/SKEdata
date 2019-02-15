@@ -15,19 +15,50 @@ $numerouserresult = mysqli_query($db, $selectuniquequery);
 	$uniqueid = $row["idunique"];
 		}
 
+//CHANGE PRIVACY
+
+
+
+
+
+
+
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>SKEdata - My files BETA</title>
-	<link rel="stylesheet" type="text/css" href="style.css?v1.1.56">
+	<link rel="stylesheet" type="text/css" href="style.css?v1.1.58">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="form.css?v1.1.3">
 	 <link rel="icon" href="favicon.ico" />
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-
+<script type="text/javascript">
+		function del(id) {
+			var answer = confirm("Sicuro di voler eliminare?");
+			if (answer){
+				window.location = "deletefile.php?id="+id;
+				return true;
+			}
+		}
+		function public(id) {
+				var answer = confirm("Do you really want to make the file public?");
+				if (answer){
+					window.location = "myfiles.php?pub="+id;
+					return true;
+				}
+			}
+		function private(id) {
+				var answer = confirm("Do you really want to make the file private?");
+				if (answer){
+					window.location = "myfiles.php?priv="+id;
+					return true;
+				}
+			}
+</script>
+	
 </head>
 
 <body>
@@ -42,17 +73,6 @@ $numerouserresult = mysqli_query($db, $selectuniquequery);
   		 <li><a class="active" href="">My files</a></li>
   		 <li><a href="settings.php">Settings</a></li>
 		</ul>
-		<!-- notification message -->
-		<?php if (isset($_SESSION['success'])) : ?>
-			<div class="error success" >
-				<h3>
-					<?php 
-						echo $_SESSION['success']; 
-						unset($_SESSION['success']);
-					?>
-				</h3>
-			</div>
-		<?php endif ?>
 		<!-- logged in user information -->
 		<div class="profile_info" align="right"> 
 			<img src="images/user_profile.png" style="display: none" >
@@ -72,6 +92,17 @@ $numerouserresult = mysqli_query($db, $selectuniquequery);
 		</div>
 	</div>
 	<div class="content">
+				<!-- notification message -->
+		<?php if (isset($_SESSION['success'])) : ?>
+			<div class="error success" >
+				<h3>
+					<?php 
+						echo $_SESSION['success']; 
+						unset($_SESSION['success']);
+					?>
+				</h3>
+			</div>
+		<?php endif ?>
 		
 		<div class="myfiles">	
 			 
@@ -87,15 +118,16 @@ if (mysqli_num_rows($result1) > 0) {
 		
 		// Is a file PRIVATE or PUBLIC
 		if($row["priv"] != 0) {
-			$privacy = "Private";
+			$privacy = "<a href='javascript:;' onclick=" . '"' . "public('" . $row["fileid"]."')" . '"' . "><img src='./img/lock1.png' class='privimg' alt='Private file' title='Private file'></a>";
 		} elseif ($row["priv"] == 0){
-			$privacy = "Public";
+			$privacy = "<a href='javascript:;' onclick=" . '"' . "private('" . $row["fileid"]."')" . '"' . "><img src='./img/globe.png' class='privimg' alt='Public file' title='Public file'></a>";
 		}
 		
         echo "<div class='myfile'> <img src='img/ext/" . $row["ext"] . ".png'>
 		<div>Filename: <a href='download.php?id=" . $row["fileid"] . "' target='_blank'>". $row["filename"]. "</a><br>
 		Date: ". $row["date"] . "<br>
-		Extention: ". $row["ext"] . " - Size: ". $row["size"] . " MB - Privacy: ". $privacy ." <br> <a href='deletefile.php?id=" . $row["fileid"] . "'>
+		Extention: ". $row["ext"] . " - Size: ". $row["size"] . " MB ". $privacy ." <br> 
+		<a href='javascript:;' onclick=" . '"' . "del('" . $row["fileid"]."')" . '"' . ">
 		<input type='submit' class='btn del delbtn' value='Delete'></a></div></div>";
 		
 	
@@ -111,7 +143,7 @@ mysqli_close($db);
 		</div>
 	</div>
 	
-	<div class="footer"><p>Made by <a href="https://www.sebastianoriva.it" class="footer" target="_blank">Sebastiano Riva</a> &copy <?php $year = date("Y"); echo $year; php?></p></div>
+	<div class="footer"><p>Made by <a href="https://www.sebastianoriva.it" class="footer" target="_blank">Sebastiano Riva</a> &copy <?php $year = date("Y"); echo $year; ?></p></div>
 	
 	
 	

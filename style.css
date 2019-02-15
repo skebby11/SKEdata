@@ -181,6 +181,14 @@ a.footer {color: #231F20;}
 	margin: 5px;
 	float: right;
 }
+
+.myfile .privimg {
+	width:30px; 
+	height:30px; 
+	float: none; 
+	margin: -5px 10px;
+}
+
 .myfile div {display: inline-block; margin: 5px;}
 .myfile:after {content: "";display: block;clear: both;}
 

@@ -68,22 +68,14 @@ $newmail2=$_POST['newmail'];
 		<?php endif ?>
 	
 				 <?php
-
-	$conn = mysqli_connect('localhost', 'sebastianoriva', '', 'my_sebastianoriva');
-				// Check connection
-				if (!$conn) {
-					die("Connection failed: " . mysqli_connect_error());
-				}
-
 				$sql1 = "SELECT username, email, password FROM users where id = '$idutente'";
-				$result1 = mysqli_query($conn, $sql1);
+				$result1 = mysqli_query($db, $sql1);
 
 					// output data of each row
 					while($row = mysqli_fetch_assoc($result1)) {
 						$showusername=$row["username"];
 						$showemail=$row["email"];
-    					}					
-				mysqli_close($conn);
+    					}				
 
 				?> 
 				

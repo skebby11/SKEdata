@@ -14,6 +14,10 @@
 	$email    = "";
 	$errors   = array(); 
 
+	// get variables from URL, if any
+	$pub = $_GET['pub'];
+	$priv = $_GET['priv'];
+
 	// call the register() function if register_btn is clicked
 	if (isset($_POST['register_btn'])) {
 		register();
@@ -24,6 +28,15 @@
 		login();
 	}
 
+	// call the mkpublic() function if pub URL variable is not empty
+	if (!empty($pub)){
+		mkpublic();
+	}
+	// call the mkpriv() function if priv URL variable is not empty
+	if (!empty($priv)){
+		mkpriv();
+	}
+
 	if (isset($_GET['logout'])) {
 		session_destroy();
 		unset($_SESSION['user']);
@@ -32,13 +45,15 @@
 
 	// REGISTER USER
 	function register(){
-		global $db, $errors;
+		global $db, $dmY, $errors;
 
 		// receive all input values from the form
 		$username    =  e($_POST['username']);
 		$email       =  e($_POST['email']);
 		$password_1  =  e($_POST['password_1']);
 		$password_2  =  e($_POST['password_2']);
+		
+		$dmY = date("d/m/Y");
 
 		// form validation: ensure that the form is correctly filled
 		if (empty($username)) { 
@@ -60,15 +75,15 @@
 
 			if (isset($_POST['user_type'])) {
 				$user_type = e($_POST['user_type']);
-				$query = "INSERT INTO users (username, email, user_type, password) 
-						  VALUES('$username', '$email', '$user_type', '$password')";
+				$query = "INSERT INTO users (username, email, user_type, password, regdate) 
+						  VALUES('$username', '$email', '$user_type', '$password', '$dmY')";
 				mysqli_query($db, $query);
 				$_SESSION['success']  = "New user successfully created!!";
 				header('location: home.php');
 			}else{
 				$unique = bin2hex(openssl_random_pseudo_bytes(8));
-				$query = "INSERT INTO users (username, email, user_type, password, idunique) 
-						  VALUES('$username', '$email', 'user', '$password', '$unique')";
+				$query = "INSERT INTO users (username, email, user_type, password, idunique, regdate) 
+						  VALUES('$username', '$email', 'user', '$password', '$unique', '$dmY')";
 				mysqli_query($db, $query);
 				
 				mkdir("uploads/$unique", 0775);
@@ -136,6 +151,22 @@
 				array_push($errors, "Wrong username/password combination");
 			}
 		}
+	}
+
+	// CHANGE FILE PRIVACY
+	function mkpublic(){
+		global $db, $pub;
+		
+		$mkpubquery = "UPDATE uploaded SET priv='0' WHERE fileid=" . $pub;
+		mysqli_query($db, $mkpubquery);
+		$_SESSION['success']  = "File is now public";
+	}
+	function mkpriv(){
+		global $db, $priv;
+
+		$mkprivquery = "UPDATE uploaded SET priv='1' WHERE fileid=" . $priv;
+		mysqli_query($db, $mkprivquery);
+		$_SESSION['success']  = "File is now private";
 	}
 
 	function isLoggedIn()
